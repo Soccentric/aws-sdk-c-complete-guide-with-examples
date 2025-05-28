@@ -1,5 +1,7 @@
 # AWS SDK for C++ - Complete Guide with Examples
 
+> **IMPORTANT:** This project has been restructured into a professional-grade CMake project. See [PROJECT_README.md](PROJECT_README.md) for details on the new structure and organization.
+
 ## Overview
 
 The AWS SDK for C++ is a collection of libraries that allows developers to integrate their C++ applications with AWS services. It provides high-performance, low-latency access to AWS APIs with modern C++ features.
@@ -36,12 +38,12 @@ sudo make install
 cmake_minimum_required(VERSION 3.13)
 project(aws-example)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 find_package(AWSSDK REQUIRED COMPONENTS core s3 ec2 dynamodb)
 
-add_executable(aws-example main.cpp)
-target_link_libraries(aws-example ${AWSSDK_LINK_LIBRARIES})
+# See CMakeLists.txt, src/lib/CMakeLists.txt and src/app/CMakeLists.txt for the actual build configuration
+# This project now uses a professional CMake structure with proper separation of library and applications
 ```
 
 ### Initial Setup Code
