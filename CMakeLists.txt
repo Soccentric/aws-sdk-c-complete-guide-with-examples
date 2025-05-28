@@ -32,14 +32,32 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Find required packages
-find_package(AWSSDK REQUIRED COMPONENTS core s3 ec2 dynamodb)
+# Include FetchContent module
+include(FetchContent)
+
+# Use FetchContent to get AWS SDK for C++
+FetchContent_Declare(
+    aws-sdk-cpp
+    GIT_REPOSITORY https://github.com/aws/aws-sdk-cpp.git
+    GIT_TAG 1.11.143  # You can update this to the version you want
+)
+
+# Configure AWS SDK build options
+set(BUILD_ONLY "core;s3;ec2;dynamodb" CACHE STRING "Only build specified components")
+set(ENABLE_TESTING OFF CACHE BOOL "Disable AWS SDK tests")
+set(AUTORUN_UNIT_TESTS OFF CACHE BOOL "Don't run AWS SDK tests")
+set(BUILD_SHARED_LIBS ON CACHE BOOL "Build shared libraries")
+
+# Make the AWS SDK available
+FetchContent_MakeAvailable(aws-sdk-cpp)
+
+# Find other required packages
 find_package(Threads REQUIRED)
 find_package(Doxygen)
 
-# Print found AWS SDK components
-message(STATUS "Found AWS SDK components:")
-foreach(COMPONENT ${AWSSDK_FOUND_COMPONENTS})
+# Print AWS SDK components being built
+message(STATUS "Building AWS SDK components:")
+foreach(COMPONENT ${BUILD_ONLY})
   message(STATUS "  ${COMPONENT}")
 endforeach()
 
@@ -100,7 +118,7 @@ message(STATUS "=====================================")
 message(STATUS "Version:           ${PROJECT_VERSION}")
 message(STATUS "Build type:        ${CMAKE_BUILD_TYPE}")
 message(STATUS "Install prefix:    ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "AWS SDK location:  ${AWSSDK_FOUND}")
+message(STATUS "AWS SDK:           Fetched via FetchContent (v1.11.143)")
 message(STATUS "C++ Compiler:      ${CMAKE_CXX_COMPILER}")
 message(STATUS "Tests:             ${BUILD_TESTS}")
 if(DOXYGEN_FOUND)
