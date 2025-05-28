@@ -11,19 +11,40 @@ The project follows modern C++ project organization practices:
 ```
 .
 ├── cmake/              # CMake modules and configuration files
+│   ├── cmake_uninstall.cmake.in    # Template for uninstall target
+│   ├── Doxyfile.in                 # Template for Doxygen configuration
+│   ├── FindDoxygen.cmake           # Custom Doxygen finder
+│   └── PackageConfig.cmake         # Packaging configuration
 ├── doc/                # Documentation files
 ├── include/            # Public headers
 │   └── awsexamples/    # Project headers
+│       ├── AwsUtils.h             # AWS utilities and initialization
+│       ├── S3Manager.h            # S3 service management
+│       ├── DynamoDBManager.h      # DynamoDB service management
+│       └── EC2Manager.h           # EC2 service management
 ├── src/                # Source code
 │   ├── app/            # Applications
+│   │   ├── CMakeLists.txt         # Application build configuration
+│   │   ├── S3Example.cpp          # S3 example application
+│   │   ├── DynamoDBExample.cpp    # DynamoDB example application
+│   │   └── EC2Example.cpp         # EC2 example application
 │   └── lib/            # Library implementations
+│       ├── CMakeLists.txt         # Library build configuration
+│       ├── AwsUtils.cpp           # AWS utilities implementation
+│       ├── S3Manager.cpp          # S3 manager implementation
+│       ├── DynamoDBManager.cpp    # DynamoDB manager implementation
+│       └── EC2Manager.cpp         # EC2 manager implementation
 ├── test/               # Test files
+│   ├── CMakeLists.txt            # Test build configuration
+│   └── S3ManagerTest.cpp         # S3 manager unit tests
 ├── scripts/            # Scripts for build automation, etc.
 ├── build/              # Build directory (generated)
 ├── .clang-format       # Code formatting configuration
 ├── .clang-tidy         # Linting configuration
+├── build.sh            # Build automation script
+├── setup_credentials.sh # AWS credentials setup script
 ├── CMakeLists.txt      # Main CMake configuration
-├── LICENSE             # License file
+├── LICENSE             # License file (Apache 2.0)
 ├── PROJECT_README.md   # This file
 └── README.md           # Original AWS SDK guide
 
@@ -178,6 +199,15 @@ After building, you can run the examples:
 ```bash
 # Navigate to the build directory
 cd build/bin
+
+# Run the S3 example
+./s3-example
+
+# Run the DynamoDB example
+./dynamodb-example
+
+# Run the EC2 example
+./ec2-example
 
 # Original examples:
 ./aws-example             # Main example
